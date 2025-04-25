@@ -1,7 +1,12 @@
 [package]
-name = "s3uri"
-version = "0.1.0"
+authors = ["Cariad Eccleston <cariad@cariad.earth>"]
+description = "AWS S3 URIs"
 edition = "2021"
+license = "MIT"
+name = "s3uri"
+readme = "README.md"
+repository = "https://github.com/cariad/s3uri"
+version = "0.1.0"
 
 [dependencies]
 regex = "1.11.1"
