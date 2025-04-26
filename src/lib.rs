@@ -1,5 +1,4 @@
 #[doc = include_str!("../README.md")]
-
 use regex::Regex;
 
 pub mod s3key;
@@ -34,7 +33,7 @@ pub fn from_bucket(bucket: &str) -> Result<S3Uri, String> {
     }
 
     Ok(S3Uri {
-        bucket: String::from(normal),
+        bucket: normal,
         key: S3Key::empty(),
     })
 }
@@ -62,7 +61,7 @@ pub fn from_uri(uri: &str) -> Result<S3Uri, String> {
                 }
 
                 Ok(uri)
-            },
+            }
             None => Err(format!("failed to parse bucket in S3 URI \"{}\"", uri)),
         },
         None => Err(format!("failed to parse \"{}\" as an S3 URI", uri)),

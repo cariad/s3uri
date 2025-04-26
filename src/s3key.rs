@@ -20,19 +20,11 @@ impl PartialEq<str> for S3Key {
     fn eq(&self, other: &str) -> bool {
         self.0.eq(other)
     }
-
-    fn ne(&self, other: &str) -> bool {
-        !self.eq(other)
-    }
 }
 
 impl PartialEq<&str> for S3Key {
     fn eq(&self, other: &&str) -> bool {
         self.0.eq(other)
-    }
-
-    fn ne(&self, other: &&str) -> bool {
-        !self.eq(other)
     }
 }
 
