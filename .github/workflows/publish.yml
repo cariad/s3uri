@@ -37,7 +37,7 @@ jobs:
       run: cargo login ${{ secrets.CRATES_IO_API_KEY }}
 
     - name: Publish
-      run: cargo publish --allow-dirty --dry-run
+      run: cargo publish --allow-dirty
 
     - name: Logout
       run: cargo logout
