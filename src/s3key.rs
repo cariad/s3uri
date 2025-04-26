@@ -51,6 +51,20 @@ impl S3Key {
         S3Key(String::from(""))
     }
 
+    /// Describes whether the key is a prefix (i.e. ends with `/`, returns
+    /// `true`) or an object key (returns `false`).
+    ///
+    /// ```rust
+    /// let prefix = s3uri::S3Key::new("images/");
+    /// assert!(prefix.is_prefix());
+    ///
+    /// let clowns = prefix.join("clowns.jpg");
+    /// assert!(!clowns.is_prefix());
+    /// ```
+    pub fn is_prefix(&self) -> bool {
+        self.0.ends_with("/")
+    }
+
     /// Joins a suffix to the key.
     ///
     /// Slashes at the start and end of the suffix will be normalised as-needed.
