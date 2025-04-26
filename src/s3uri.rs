@@ -6,19 +6,11 @@ impl PartialEq<str> for S3Uri {
     fn eq(&self, other: &str) -> bool {
         self.to_string().eq(other)
     }
-
-    fn ne(&self, other: &str) -> bool {
-        !self.eq(other)
-    }
 }
 
 impl PartialEq<&str> for S3Uri {
     fn eq(&self, other: &&str) -> bool {
         self.to_string().eq(other)
-    }
-
-    fn ne(&self, other: &&str) -> bool {
-        !self.eq(other)
     }
 }
 

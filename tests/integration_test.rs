@@ -7,8 +7,7 @@ fn test_uri_root() {
 #[test]
 fn test_uri_with_key() {
     for k in ["circus.jpg", "/circus.jpg"] {
-        let uri = s3uri::from_bucket("circus").unwrap()
-            .join(k);
+        let uri = s3uri::from_bucket("circus").unwrap().join(k);
 
         assert_eq!(uri, "s3://circus/circus.jpg");
     }
@@ -16,15 +15,15 @@ fn test_uri_with_key() {
 
 #[test]
 fn test_uri_with_key_prefix() {
-    let uri = s3uri::from_bucket("circus").unwrap()
-        .join("images/");
+    let uri = s3uri::from_bucket("circus").unwrap().join("images/");
 
     assert_eq!(uri, "s3://circus/images/");
 }
 
 #[test]
 fn test_uri_with_prefixed_key() {
-    let uri = s3uri::from_bucket("circus").unwrap()
+    let uri = s3uri::from_bucket("circus")
+        .unwrap()
         .join("images")
         .join("clowns.jpg");
 

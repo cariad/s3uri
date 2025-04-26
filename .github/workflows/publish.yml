@@ -24,12 +24,11 @@ jobs:
           target
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
+    - name: Install set-cargo-version
+      run: cargo install set-cargo-version
+
     - name: Version
-      env:
-        VERSION: ${{ github.event.release.tag_name }}
-      run: |
-        sed -i "s/0.0.0/$VERSION/g" Cargo.toml
-        cat Cargo.toml
+      run: set-cargo-version ./Cargo.toml ${{ github.event.release.tag_name }}
 
     - name: Package
       run: cargo package
@@ -38,4 +37,7 @@ jobs:
       run: cargo login ${{ secrets.CRATES_IO_API_KEY }}
 
     - name: Publish
-      run: cargo publish --allow-dirty --dry-run
+      run: cargo publish --allow-dirty
+
+    - name: Logout
+      run: cargo logout
