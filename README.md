@@ -75,13 +75,13 @@ let images_uri = s3uri::from_bucket("circus")
     .unwrap()
     .join("images/");
 
-assert_eq!(images_uri.key.leaf(), "images/");
+assert_eq!(images_uri.key.leaf(), Some("images/"));
 
 let clowns_uri = images_uri
     .join("staff")
     .join("clowns.jpg");
 
-assert_eq!(clowns_uri.key.leaf(), "clowns.jpg");
+assert_eq!(clowns_uri.key.leaf(), Some("clowns.jpg"));
 ```
 
 ## Author
