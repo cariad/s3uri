@@ -121,20 +121,24 @@ impl S3Key {
     ///
     /// ```rust
     /// let key = s3uri::S3Key::empty();
-    /// assert_eq!(key.leaf(), "");
+    /// assert_eq!(key.leaf(), None);
     ///
     /// let key = s3uri::S3Key::new("clowns.jpg");
-    /// assert_eq!(key.leaf(), "clowns.jpg");
+    /// assert_eq!(key.leaf(), Some("clowns.jpg"));
     ///
     /// let key = s3uri::S3Key::new("images/");
-    /// assert_eq!(key.leaf(), "images/");
+    /// assert_eq!(key.leaf(), Some("images/"));
     ///
     /// let key = s3uri::S3Key::new("images")
     ///     .join("clowns.jpg");
     ///
-    /// assert_eq!(key.leaf(), "clowns.jpg");
+    /// assert_eq!(key.leaf(), Some("clowns.jpg"));
     /// ```
-    pub fn leaf(&self) -> &str {
+    pub fn leaf(&self) -> Option<&str> {
+        if self.is_empty() {
+            return None;
+        }
+
         let mut iterator = self.0.rmatch_indices('/');
 
         if self.0.ends_with('/') {
@@ -142,8 +146,8 @@ impl S3Key {
         }
 
         match iterator.next() {
-            Some(index) => &self.0[index.0 + 1..],
-            None => &self.0,
+            Some(index) => Some(&self.0[index.0 + 1..]),
+            None => Some(&self.0),
         }
     }
 
