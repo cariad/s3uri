@@ -23,7 +23,8 @@ impl fmt::Display for S3Uri {
 impl S3Uri {
     /// Joins a suffix to the key.
     ///
-    /// Slashes at the start and end of the suffix will be normalised as-needed.
+    /// Separators at the start and end of the suffix will be normalised
+    /// as-needed.
     ///
     /// For example, to join a key onto a bucket:
     ///

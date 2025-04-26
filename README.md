@@ -35,7 +35,7 @@ assert_eq!(uri.key, "");
 
 ### Joining keys and key prefixes
 
-Call `s3uri::S3Uri::join()` to build up the key. Slashes will be normalised and added between each segment as-needed.
+Call `s3uri::S3Uri::join()` to build up the key. Separators will be normalised and added between each segment as-needed.
 
 ```rust
 let images_prefix = s3uri::from_bucket("circus")
@@ -64,6 +64,24 @@ assert!(images_uri.key.is_prefix());
 
 let clowns_uri = images_uri.join("clowns.jpg");
 assert!(!clowns_uri.key.is_prefix());
+```
+
+### Key leaf
+
+Call `s3uri::S3Key::leaf()` to get the segment of the key after the final separator.
+
+```rust
+let images_uri = s3uri::from_bucket("circus")
+    .unwrap()
+    .join("images/");
+
+assert_eq!(images_uri.key.leaf(), "images/");
+
+let clowns_uri = images_uri
+    .join("staff")
+    .join("clowns.jpg");
+
+assert_eq!(clowns_uri.key.leaf(), "clowns.jpg");
 ```
 
 ## Author
