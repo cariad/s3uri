@@ -67,7 +67,8 @@ impl S3Key {
 
     /// Joins a suffix to the key.
     ///
-    /// Slashes at the start and end of the suffix will be normalised as-needed.
+    /// Separators at the start and end of the suffix will be normalised
+    /// as-needed.
     ///
     /// For example, to join the prefix "images" and "clowns.jpg":
     ///
@@ -78,7 +79,7 @@ impl S3Key {
     /// assert_eq!(key, "images/clowns.jpg");
     /// ```
     ///
-    /// The same result is reached if slashes are included:
+    /// The same result is reached if separators are included:
     ///
     /// ```rust
     /// let key = s3uri::S3Key::new("images/")
@@ -114,6 +115,36 @@ impl S3Key {
         let needs_separator = !self.is_empty() && !self.ends_with("/");
         let separator = if needs_separator { "/" } else { "" };
         S3Key(format!("{}{}{}{}", self, separator, normalized, suffix))
+    }
+
+    /// Gets the segment of the key after the final separator.
+    ///
+    /// ```rust
+    /// let key = s3uri::S3Key::empty();
+    /// assert_eq!(key.leaf(), "");
+    ///
+    /// let key = s3uri::S3Key::new("clowns.jpg");
+    /// assert_eq!(key.leaf(), "clowns.jpg");
+    ///
+    /// let key = s3uri::S3Key::new("images/");
+    /// assert_eq!(key.leaf(), "images/");
+    ///
+    /// let key = s3uri::S3Key::new("images")
+    ///     .join("clowns.jpg");
+    ///
+    /// assert_eq!(key.leaf(), "clowns.jpg");
+    /// ```
+    pub fn leaf(&self) -> &str {
+        let mut iterator = self.0.rmatch_indices('/');
+
+        if self.0.ends_with('/') {
+            iterator.next();
+        }
+
+        match iterator.next() {
+            Some(index) => &self.0[index.0 + 1..],
+            None => &self.0,
+        }
     }
 
     /// Creates a new S3 key.
