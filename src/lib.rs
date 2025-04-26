@@ -21,21 +21,15 @@ pub struct S3Uri {
 /// Creates an `S3Uri` from a bucket name.
 ///
 /// ```rust
-/// let uri = s3uri::from_bucket("circus").unwrap();
+/// let uri = s3uri::from_bucket("circus");
 ///
 /// assert_eq!(uri, "s3://circus/");
 /// ```
-pub fn from_bucket(bucket: &str) -> Result<S3Uri, String> {
-    let normal = bucket.trim_matches('/').to_string();
-
-    if normal.is_empty() {
-        return Err("bucket name cannot be empty".to_string());
-    }
-
-    Ok(S3Uri {
-        bucket: normal,
+pub fn from_bucket(bucket: &str) -> S3Uri {
+    S3Uri {
+        bucket: bucket.to_string(),
         key: S3Key::empty(),
-    })
+    }
 }
 
 /// Creates an `S3Uri` from a string URI.
@@ -52,7 +46,7 @@ pub fn from_uri(uri: &str) -> Result<S3Uri, String> {
     match re.captures(uri) {
         Some(cap) => match cap.get(1) {
             Some(bucket) => {
-                let mut uri = crate::from_bucket(bucket.as_str())?;
+                let mut uri = crate::from_bucket(bucket.as_str());
 
                 if let Some(key) = cap.get(2) {
                     if !key.is_empty() {
@@ -72,26 +66,8 @@ pub fn from_uri(uri: &str) -> Result<S3Uri, String> {
 mod tests {
     #[test]
     fn test_from_bucket() {
-        let cases = [
-            ["circus", "circus"],
-            ["/circus", "circus"],
-            ["circus/", "circus"],
-        ];
-
-        for case in cases {
-            let uri = crate::from_bucket(case[0]).unwrap();
-            assert_eq!(uri.bucket, case[1]);
-        }
-    }
-
-    #[test]
-    fn test_from_bucket_with_error() {
-        let cases = [["", "bucket name cannot be empty"]];
-
-        for case in cases {
-            let uri = crate::from_bucket(case[0]);
-            assert!(uri.is_err_and(|e| e == case[1]));
-        }
+        let uri = crate::from_bucket("circus");
+        assert_eq!(uri.bucket, "circus");
     }
 
     #[test]

@@ -30,7 +30,6 @@ impl S3Uri {
     ///
     /// ```rust
     /// let uri = s3uri::from_bucket("circus")
-    ///     .unwrap()
     ///     .join("clowns.jpg");
     ///
     /// assert_eq!(uri, "s3://circus/clowns.jpg");
@@ -40,7 +39,6 @@ impl S3Uri {
     ///
     /// ```rust
     /// let uri = s3uri::from_bucket("circus")
-    ///     .unwrap()
     ///     .join("images")
     ///     .join("clowns.jpg");
     ///
@@ -52,7 +50,6 @@ impl S3Uri {
     ///
     /// ```rust
     /// let images = s3uri::from_bucket("circus")
-    ///     .unwrap()
     ///     .join("images");
     ///
     /// let clowns = images.join("clowns.jpg");
