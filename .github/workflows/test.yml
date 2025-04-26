@@ -47,16 +47,6 @@ jobs:
       - name: Package
         run: cargo package
 
-  test_api_token:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test API token
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_API_KEY }}
-        run: |
-          cargo login
-          cargo logout
-
   test_project:
     runs-on: ubuntu-latest
     steps:
