@@ -51,6 +51,21 @@ let clowns_uri = images_prefix
 assert_eq!(clowns_uri, "s3://circus/images/staff/clowns.jpg");
 ```
 
+### Check if a key is a prefix
+
+Call `s3uri::S3Key::is_prefix()` to check if a key is a prefix (i.e. ends with a `/`) or not.
+
+```rust
+let images_uri = s3uri::from_bucket("circus")
+    .unwrap()
+    .join("images/");
+
+assert!(images_uri.key.is_prefix());
+
+let clowns_uri = images_uri.join("clowns.jpg");
+assert!(!clowns_uri.key.is_prefix());
+```
+
 ## Author
 
 Hello! 👋 I'm Cariad Eccleston. You can find me at [cariad.earth](https://www.cariad.earth), [github.com/cariad](https://github.com/cariad), [linkedin.com/in/cariad](https://linkedin.com/in/cariad) and [@cariad.earth](https://bsky.app/profile/cariad.earth) on Bluesky.
