@@ -26,7 +26,7 @@ assert_eq!(uri.key, "images/clowns.jpg");
 To create a new URI from scratch, pass the bucket name to `s3uri::from_bucket` to get a `s3uri::S3Uri` struct.
 
 ```rust
-let uri = s3uri::from_bucket("circus").unwrap();
+let uri = s3uri::from_bucket("circus");
 
 assert_eq!(uri, "s3://circus/");
 assert_eq!(uri.bucket, "circus");
@@ -39,7 +39,6 @@ Call `s3uri::S3Uri::join()` to build up the key. Separators will be normalised a
 
 ```rust
 let images_prefix = s3uri::from_bucket("circus")
-    .unwrap()
     .join("images/");
 
 assert_eq!(images_prefix, "s3://circus/images/");
@@ -57,7 +56,6 @@ Call `s3uri::S3Key::is_prefix()` to check if a key is a prefix (i.e. ends with a
 
 ```rust
 let images_uri = s3uri::from_bucket("circus")
-    .unwrap()
     .join("images/");
 
 assert!(images_uri.key.is_prefix());
@@ -72,7 +70,6 @@ Call `s3uri::S3Key::leaf()` to get the segment of the key after the final separa
 
 ```rust
 let images_uri = s3uri::from_bucket("circus")
-    .unwrap()
     .join("images/");
 
 assert_eq!(images_uri.key.leaf(), Some("images/"));
