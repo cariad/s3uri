@@ -10,6 +10,12 @@ impl Deref for S3Key {
     }
 }
 
+impl From<S3Key> for String {
+    fn from(val: S3Key) -> Self {
+        val.to_string()
+    }
+}
+
 impl PartialEq<str> for S3Key {
     fn eq(&self, other: &str) -> bool {
         self.0.eq(other)
@@ -150,5 +156,11 @@ mod tests {
             let key = S3Key::new(case[0]).join(case[1]);
             assert_eq!(key, case[2]);
         }
+    }
+
+    #[test]
+    fn test_string_from() {
+        let s = String::from(S3Key::new("foo"));
+        assert_eq!(s, "foo");
     }
 }

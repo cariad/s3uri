@@ -1,4 +1,4 @@
-//! s3uri: Strongly-typed AWS S3 URIs.
+#[doc = include_str!("../README.md")]
 
 use regex::Regex;
 
