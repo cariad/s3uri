@@ -16,6 +16,12 @@ impl From<S3Key> for String {
     }
 }
 
+impl From<&S3Key> for String {
+    fn from(val: &S3Key) -> Self {
+        val.to_string()
+    }
+}
+
 impl PartialEq<str> for S3Key {
     fn eq(&self, other: &str) -> bool {
         self.0.eq(other)
@@ -153,6 +159,12 @@ mod tests {
     #[test]
     fn test_string_from() {
         let s = String::from(S3Key::new("foo"));
+        assert_eq!(s, "foo");
+    }
+
+    #[test]
+    fn test_string_ref_from() {
+        let s = String::from(&S3Key::new("foo"));
         assert_eq!(s, "foo");
     }
 }
