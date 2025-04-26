@@ -162,7 +162,6 @@ mod tests {
         assert_eq!(s, "foo");
     }
 
-
     #[test]
     fn test_string_ref_from() {
         let s = String::from(&S3Key::new("foo"));
