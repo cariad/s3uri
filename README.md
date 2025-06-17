@@ -18,7 +18,7 @@ cargo add s3uri
 let uri = s3uri::from_uri("s3://circus/images/clowns.jpg").unwrap();
 
 assert_eq!(uri.bucket, "circus");
-assert_eq!(uri.key, "images/clowns.jpg");
+assert!(uri.key.is_some_and(|k| k == "images/clowns.jpg"));
 ```
 
 ### Creating a new URI
@@ -30,7 +30,7 @@ let uri = s3uri::from_bucket("circus");
 
 assert_eq!(uri, "s3://circus/");
 assert_eq!(uri.bucket, "circus");
-assert_eq!(uri.key, "");
+assert!(uri.key.is_none());
 ```
 
 ### Joining keys and key prefixes
@@ -58,10 +58,10 @@ Call `s3uri::S3Key::is_prefix()` to check if a key is a prefix (i.e. ends with a
 let images_uri = s3uri::from_bucket("circus")
     .join("images/");
 
-assert!(images_uri.key.is_prefix());
+assert!(images_uri.is_prefix());
 
 let clowns_uri = images_uri.join("clowns.jpg");
-assert!(!clowns_uri.key.is_prefix());
+assert!(!clowns_uri.is_prefix());
 ```
 
 ### Key leaf
@@ -72,13 +72,13 @@ Call `s3uri::S3Key::leaf()` to get the segment of the key after the final separa
 let images_uri = s3uri::from_bucket("circus")
     .join("images/");
 
-assert_eq!(images_uri.key.leaf(), Some("images/"));
+assert_eq!(images_uri.leaf(), Some("images/"));
 
 let clowns_uri = images_uri
     .join("staff")
     .join("clowns.jpg");
 
-assert_eq!(clowns_uri.key.leaf(), Some("clowns.jpg"));
+assert_eq!(clowns_uri.leaf(), Some("clowns.jpg"));
 ```
 
 ## Author
