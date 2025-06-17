@@ -114,7 +114,7 @@ impl S3Uri {
 }
 
 #[test]
-fn test_uri_cloney() {
+fn test_uri_clone() {
     let uri = crate::from_bucket("circus").join("clowns.jpg");
     let clone = uri.clone();
 
