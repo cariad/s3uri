@@ -5,11 +5,11 @@ pub mod s3key;
 pub mod s3uri;
 
 /// An S3 key.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct S3Key(String);
 
 /// An S3 URI.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct S3Uri {
     /// Bucket name.
     pub bucket: String,
