@@ -88,7 +88,7 @@ impl S3Uri {
             },
             None => S3Uri {
                 bucket: self.bucket.clone(),
-                key: Some(S3Key { 0: "".to_owned() }.join(part)),
+                key: Some(S3Key::empty().join(part)),
             },
         }
     }
