@@ -15,7 +15,7 @@ pub struct S3Uri {
     pub bucket: String,
 
     /// Key.
-    pub key: S3Key,
+    pub key: Option<S3Key>,
 }
 
 /// Creates an `S3Uri` from a bucket name.
@@ -28,7 +28,7 @@ pub struct S3Uri {
 pub fn from_bucket(bucket: &str) -> S3Uri {
     S3Uri {
         bucket: bucket.to_string(),
-        key: S3Key::empty(),
+        key: None,
     }
 }
 
@@ -38,7 +38,7 @@ pub fn from_bucket(bucket: &str) -> S3Uri {
 /// let uri = s3uri::from_uri("s3://circus/clowns.jpg").unwrap();
 ///
 /// assert_eq!(uri.bucket, "circus");
-/// assert_eq!(uri.key, "clowns.jpg");
+/// assert!(uri.key.is_some_and(|k| k == "clowns.jpg"));
 /// ```
 pub fn from_uri(uri: &str) -> Result<S3Uri, String> {
     let re = Regex::new(r"^s3://([^/]+)/?(.*)$").unwrap();
@@ -73,8 +73,6 @@ mod tests {
     #[test]
     fn test_from_uri() {
         let cases = [
-            ["s3://circus", "circus", ""],
-            ["s3://circus/", "circus", ""],
             ["s3://circus/clowns.jpg", "circus", "clowns.jpg"],
             [
                 "s3://circus/images/clowns.jpg",
@@ -87,7 +85,19 @@ mod tests {
             let uri = crate::from_uri(case[0]).unwrap();
 
             assert_eq!(uri.bucket, case[1]);
-            assert_eq!(uri.key, case[2]);
+            assert!(uri.key.is_some_and(|k| k == case[2]));
+        }
+    }
+
+    #[test]
+    fn test_from_uri_with_no_key() {
+        let cases = [["s3://circus", "circus"], ["s3://circus/", "circus"]];
+
+        for case in cases {
+            let uri = crate::from_uri(case[0]).unwrap();
+
+            assert_eq!(uri.bucket, case[1]);
+            assert!(uri.key.is_none());
         }
     }
 
